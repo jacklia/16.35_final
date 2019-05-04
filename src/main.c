@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <client.h>
 #include <unistd.h>
 #include "musicretrieval.h"
 #include "robot.h"
@@ -15,8 +14,8 @@ int main(int argc, char *argv[])
     // create the simulator
     music_retrieval * music = create_music_retrieval();
     int num_notes = 42;
-    int ** note_array = malloc(num_notes * sizeof(int));
-    note_array = {72,60,79,79,72,62,81,90,60,90,64,83,62,81,65,77,66,84,83,64,66,65,67,86,77,84,86,86,69,86,67,70,71,72,69,70,72,72,91,71,91,72} //Pitch test (in decimal)
+    //int note_array = malloc(num_notes * sizeof(int));
+    int pitches[42] = {72,60,79,79,72,62,81,90,60,90,64,83,62,81,65,77,66,84,83,64,66,65,67,86,77,84,86,86,69,86,67,70,71,72,69,70,72,72,91,71,91,72}; //Pitch test (in decimal)
     // create 2 robots and add them to the music_retrieval
     music->num_robots = 2;
     music->robots = malloc(music->num_robots * sizeof(robot));
@@ -24,6 +23,7 @@ int main(int argc, char *argv[])
     music -> robot_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
     music -> robot_cond = (pthread_cond_t *) malloc(sizeof(pthread_cond_t));
     music -> new_note_added = (pthread_cond_t *) malloc(sizeof(pthread_cond_t));
+    music -> note_array[42] = *pitches;
     pthread_mutex_init( music -> note_array_lock, NULL);
     pthread_mutex_init(music -> robot_lock, NULL);
     pthread_cond_init(music -> robot_cond, NULL);

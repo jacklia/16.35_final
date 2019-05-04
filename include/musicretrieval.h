@@ -11,10 +11,10 @@ typedef struct t_music_retrieval{
     int state;
     int added;                      //prevent spurious wakeup
     // don't change these
-    int num_notes;
-    int ** note_array;
-     int * current_note
-     int current_note_idx
+    int num_notes;                  
+    int note_array[42];         //num_notes in bracket
+     int * current_note;
+     int current_note_idx;
     int robots_updated; // condition is robots_updated == num_robots.
     int num_robots;
     int note_to_play;

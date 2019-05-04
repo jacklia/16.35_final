@@ -1,7 +1,6 @@
 #include "musicretrieval.h"
 #include "robot.h"
 #include <stdlib.h>
-//#include "client.h"
 #include <math.h>
 #include <unistd.h>
 #include <stdio.h>
