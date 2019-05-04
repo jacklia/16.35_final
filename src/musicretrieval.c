@@ -31,7 +31,23 @@ music_retrieval * create_music_retrieval(){
 }
 void music_retrieval_convert(struct t_music_retrieval * m, int musical_note){
 // music->note_to_play = x
-
+    if (musical_note == 60) {
+        music->note_to_play = 0;
+    } else if (musical_note == 62 || musical_note == 74 || musical_note == 86) {
+        music->note_to_play = 1;
+    } else if (musical_note == 64 || musical_note == 76 || musical_note == 88) {
+        music->note_to_play = 2;
+    } else if (musical_note == 65 || musical_note == 77 || musical_note == 89) {
+        music->note_to_play = 3;
+    } else if (musical_note == 67 || musical_note == 79 || musical_note == 91) {
+        music->note_to_play = 4;
+    } else if (musical_note == 69 || musical_note == 81 || musical_note == 93) {
+        music->note_to_play = 5;
+    } else if (musical_note == 71 || musical_note == 83 || musical_note == 95) {
+        music->note_to_play = 6;
+    } else if (musical_note == 72 || musical_note == 84) {
+        music->note_to_play = 7;
+    }
 }
 void run(struct t_music_retrieval * music){
     while (music->current_note_idx <= music->num_notes) {

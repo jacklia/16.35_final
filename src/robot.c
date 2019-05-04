@@ -18,7 +18,7 @@ robot * create_robot(struct t_music_retrieval*music){
 }
 
 void robot_run (struct t_robot * r){
-    while (music->current_note_idx <= music->num_notes) {                   //Method does not run if current time exceeds max time     
+    while (r->music->r->music->note_to_play_idx <= r->music->num_notes) {                   //Method does not run if current time exceeds max time     
         pthread_mutex_lock(r->music_retrieval->robot_lock);
         while (r->music_retrieval->added != 1) {  
             pthread_cond_wait(r->music_retrieval->new_note_added, r->music_retrieval->robot_lock);
@@ -31,7 +31,40 @@ void robot_run (struct t_robot * r){
         //if (note_to_play == 4)  //PWM compare for 4; 
         //if (note_to_play == 5)  //PWM compare for 5; 
         //if (note_to_play == 6)  //PWM compare for 6; 
-        ///if (note_to_play == 7)  //PWM compare for 7;                                                    //Call control_vehicle method
+        ///if (note_to_play == 7)  //PWM compare for 7;  
+        if (r->music->note_to_play == 0) {
+            PWM_1_SetCompare0(20000);
+            PWM_5_SetCompare0(20000);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 1) {
+            PWM_1_SetCompare0(1500);
+            PWM_5_SetCompare0(1500);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 2) {
+            PWM_2_SetCompare0(20000);
+            PWM_6_SetCompare0(20000);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 3) {
+            PWM_2_SetCompare0(1500);
+            PWM_6_SetCompare0(1500);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 4) {
+            PWM_3_SetCompare0(20000);
+            PWM_7_SetCompare0(20000);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 5) {
+            PWM_3_SetCompare0(1500);
+            PWM_7_SetCompare0(1500);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 6) {
+            PWM_4_SetCompare0(20000);
+            PWM_8_SetCompare0(0);
+            CyDelay(500);
+        } else if (r->music->note_to_play == 7) {
+            PWM_4_SetCompare0(1500);
+            PWM_8_SetCompare0(1500);
+            CyDelay(500);
+        }                                                  
         pthread_mutex_lock(r->music_retrieval->robot_lock);                                                  //Implement individual vehicle thread locks
         r->music_retrieval->robots_updated += 1;
         pthread_cond_broadcast(r->music_retrieval->robot_cond);             //wakeup musicretrieval

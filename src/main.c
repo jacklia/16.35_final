@@ -29,8 +29,18 @@ int main(int argc, char *argv[])
     pthread_cond_init(music -> robot_cond, NULL);
     pthread_cond_init(music -> new_note_added, NULL);
     pthread_t thread_ids [music->num_robots];
+    //PWMs for Robot 1's servos 1-4
+    PWM_1_Start();
+    PWM_2_Start();
+    PWM_3_Start();
+    PWM_4_Start();
+    //PWMs for Robot 2's servos 1-4
+    PWM_5_Start();
+    PWM_6_Start();
+    PWM_7_Start();
+    PWM_8_Start();
     for (int i = 0; i < music->num_robots; i++) {
-        robot * robot = create_robot();
+        robot * robot = create_robot(music);
         robot->robot_assigned_num = i;
         // creates a copy so we can free the original vehicle after
         music->robots[i] = *robot;
