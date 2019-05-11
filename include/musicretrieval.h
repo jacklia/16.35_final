@@ -22,6 +22,7 @@ typedef struct t_music_retrieval{
     int robots_updated; // condition is robots_updated == num_robots.
     int num_robots;
     int note_to_play;
+    int num_runs;
     robot * robots;
     // music_retrieval run function
     void    (*run)(struct t_music_retrieval * m);

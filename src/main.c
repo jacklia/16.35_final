@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
     music -> new_note_added = (SemaphoreHandle_t *) malloc(sizeof(SemaphoreHandle_t));
     music -> note_array[42] = *pitches;
     //pthread_mutex_init( music -> note_array_lock, NULL);
-    music -> note_array_lock = xSemaphoreCreateBinary();
+    music -> note_array_lock = xSemaphoreCreateMutex();
     //pthread_mutex_init(music -> robot_lock, NULL);
-    music -> robot_lock = xSemaphoreCreateBinary();
+    music -> robot_lock = xSemaphoreCreateMutex();
     //pthread_cond_init(music -> robot_cond, NULL);
     music -> robot_cond = xSemaphoreCreateCounting();
     //pthread_cond_init(music -> new_note_added, NULL);
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         //pthread_create(&thread_ids[i], NULL, (void *)music->robots[i].run, &(music -> robots[i]));
         BaseType_t xReturned;
         TaskHandle_t xHandle = NULL;
-        xTaskCreate((void *)music->robots[i].run, (signed char*) "robot_thread", 1024, &(music -> robots[i]), 1, &xHandle);
+        xReturned = xTaskCreate((void *)music->robots[i].run, (signed char*) "robot_thread", 1024, &(music -> robots[i]), 1, &xHandle);
         thread_ids.append(xHandle);
 
     }
