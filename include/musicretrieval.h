@@ -4,17 +4,21 @@
 #include <pthread.h>
 typedef struct t_music_retrieval{
     // synchronization variables here
-    pthread_mutex_t * note_array_lock;
-    pthread_mutex_t * robot_lock;
-     pthread_cond_t * robot_cond;
-    pthread_cond_t * new_note_added;
+    //pthread_mutex_t * note_array_lock;
+    SemaphoreHandle_t * note_array_lock;
+    //pthread_mutex_t * robot_lock;
+    SemaphoreHandle_t * robot_lock;
+    //pthread_cond_t * robot_cond;
+    SemaphoreHandle_t * robot_cond;
+    //pthread_cond_t * new_note_added;
+    SemaphoreHandle_t * new_note_added;
     int state;
     int added;                      //prevent spurious wakeup
     // don't change these
     int num_notes;                  
     int note_array[42];         //num_notes in bracket
-     int * current_note;
-     int current_note_idx;
+    int * current_note;
+    int current_note_idx;
     int robots_updated; // condition is robots_updated == num_robots.
     int num_robots;
     int note_to_play;
