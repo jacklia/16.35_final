@@ -23,7 +23,7 @@ typedef struct t_music_retrieval{
     int num_robots;
     int note_to_play;
     int num_runs;
-    robot * robots;
+    struct t_robot * robots;
     // music_retrieval run function
     void    (*run)(struct t_music_retrieval * m);
     void    (*music_retrieval_convert)(struct t_music_retrieval * m, int musical_note);         //if change to hex do unsigned char 
