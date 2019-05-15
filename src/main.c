@@ -51,23 +51,33 @@ int main(int argc, char *argv[])
     PWM_6_Start();
     PWM_7_Start();
     PWM_8_Start();
-    for (int i = 0; i < music->num_robots; i++) {
-        robot * robot = create_robot(music);
-        robot->robot_assigned_num = i;
+    robot * robot = create_robot(music);
+    robot->robot_assigned_num = 0;
         // creates a copy so we can free the original vehicle after
-        music->robots[i] = *robot;
-        free(robot);
+    music->robots[0] = *robot;
+    free(robot);
         // create the threads using thread_ids[i]
         //pthread_create(&thread_ids[i], NULL, (void *)music->robots[i].run, &(music -> robots[i]));
-        BaseType_t xReturned;
-        TaskHandle_t xHandle = NULL;
-        xReturned = xTaskCreate((void *)music->robots[i].run, (signed char*) "robot_thread", 1024, &(music -> robots[i]), 1, &xHandle);
-        thread_ids.append(xHandle);
-
-    }
-    music->run(music);
+    BaseType_t xReturned;
+    TaskHandle_t xRobot1 = NULL;
+    xReturned = xTaskCreate((void *)music->robots[i].run, (signed char*) "robot_thread", 1024, &(music -> robots[i]), 1, &xRobot1);
+    robot * robot = create_robot(music);
+    robot->robot_assigned_num = 1;
+        // creates a copy so we can free the original vehicle after
+    music->robots[1] = *robot;
+    free(robot);
+        // create the threads using thread_ids[i]
+        //pthread_create(&thread_ids[i], NULL, (void *)music->robots[i].run, &(music -> robots[i]));
+    BaseType_t xReturned1;
+    TaskHandle_t xRobot2 = NULL;
+    xReturned1 = xTaskCreate((void *)music->robots[i].run, (signed char*) "robot_thread", 1024, &(music -> robots[i]), 1, &xRobot2);
+    BaseType_t xReturned2;
+    TaskHandle_t xMusic = NULL;
+    xReturned2 = xTaskCreate((void *)music->run(music), (signed char*) "music_thread", 1024, NULL, 1, &xMusic);
     //for (int i = 0; i < music -> num_robots; i++) pthread_join(thread_ids[i],NULL); // join the threads we created
-    for (int i = 0; i < music -> num_robots; i++) vTaskDelete(thread_ids[i]); // join the threads we created
+    vTaskDelete(xMusic); // join the threads we created
+    vTaskDelete(xRobot1);
+    vTaskDelete(xRobot2);
     //pthread_mutex_destroy(music -> note_array_lock);   //Destroy mutex locks used
     vSemaphoreDelete(music->note_array_lock);
     //pthread_mutex_destroy(music -> robot_lock);   //Destroy mutex locks used

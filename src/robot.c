@@ -20,7 +20,9 @@ robot * create_robot(struct t_music_retrieval*music){
 void robot_run (struct t_robot * r){
     while (r->music->r->music->note_to_play_idx <= r->music->num_notes) {                   //Method does not run if current time exceeds max time     
         //pthread_mutex_lock(r->music_retrieval->robot_lock);
-        //while (r->music_retrieval->added != 1) {  
+        while (r->music_retrieval->added != 1) { 
+                 ulTaskNotifyTake( pdTRUE, portMAX_DELAY );     //Wait until notified that note added
+             }
         //    pthread_cond_wait(r->music_retrieval->new_note_added, r->music_retrieval->robot_lock);
         //} 
         //pthread_mutex_unlock(r->music_retrieval->robot_lock);
@@ -32,7 +34,6 @@ void robot_run (struct t_robot * r){
         //if (note_to_play == 5)  //PWM compare for 5; 
         //if (note_to_play == 6)  //PWM compare for 6; 
         ///if (note_to_play == 7)  //PWM compare for 7;  
-        if (xSemaphoreTake(r->music->new_note_added, (TickType_t) 10000) == pdTrue) {
             if (r->music->note_to_play == 0) {
                 if r->robot_assigned_num == 1:
                     PWM_1_SetCompare0(20000);
@@ -85,7 +86,7 @@ void robot_run (struct t_robot * r){
             if (xSemaphoreTake(r->music_retrieval->robot_lock, ( TickType_t ) 1000)) {                                                  //Implement individual vehicle thread locks
                 r->music_retrieval->robots_updated += 1;
                 if (r->music_retrieval->robots_updated == 2) {
-                    xSemaphoreGive(r->music->new_note_added);
+                    xTaskNotifyGive(xMusic);
                     r->music_retrieval->state = 0;
                 } 
                 xSemaphoreGive(r->music_retrieval->robot_lock);

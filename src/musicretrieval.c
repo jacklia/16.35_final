@@ -74,6 +74,9 @@ void run(struct t_music_retrieval * music){
         //    music->num_runs += 1
             xSemaphoreGive(music->new_note_added)
         }
+        xTaskNotifyGive(xRobot1);
+        xTaskNotifyGive(xRobot2);
+        ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
         // we're past the condition (everyone is updated) so we can now broadcast to the waiting threads
         // pthread_mutex_lock(music->note_array_lock);                                                                   //Lock condition
         // music->robots_updated = 0;
