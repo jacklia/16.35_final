@@ -13,7 +13,7 @@ robot * create_robot(struct t_music_retrieval*music){
     // assign function pointers to defaults
     r->run = &robot_run;
     //robotAssignednum already initialized in main
-    return robot;
+    return r;
 
 }
 
