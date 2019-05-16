@@ -231,7 +231,6 @@ void robot_run (struct t_robot * r){
             // if both robots updated, notify music thread it can move to next note
             if (r->music->robots_updated == 2) {
                 xTaskNotifyGive(xMusic);
-                r->music->state = 0;
             } 
             xSemaphoreGive(r->music->robot_lock);
         }
@@ -245,7 +244,7 @@ int main(void) {
     music_retrieval * music = create_music_retrieval();
     music->num_notes = 42;
     // hard-coded array of notes
-    int pitches[music->num_notes] = {72,60,79,79,72,62,81,90,60,90,64,83,62,81,65,77,66,84,83,64,66,65,67,86,77,84,86,86,69,86,67,70,71,72,69,70,72,72,91,71,91,72}; //Pitch test (in decimal)
+    int pitches[42] = {72,60,79,79,72,62,81,90,60,90,64,83,62,81,65,77,66,84,83,64,66,65,67,86,77,84,86,86,69,86,67,70,71,72,69,70,72,72,91,71,91,72}; //Pitch test (in decimal)
     // create 2 robots and other music properties
     music->num_robots = 2;
     music->robots = malloc(music->num_robots * sizeof(robot));
@@ -289,7 +288,7 @@ int main(void) {
    
     //cleanup
     free(music);
-    free(music->robot_lock)
+    free(music->robot_lock);
     free(robot1);
     free(robot2);
 }
